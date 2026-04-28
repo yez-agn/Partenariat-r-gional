@@ -9,89 +9,49 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-:root {
-  --orange: #F4521E;
-  --dark: #1a1a1a;
-  --light: #f5f5f5;
-  --border: #e0e0e0;
-}
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--light);
-  color: var(--dark);
-  line-height: 1.6;
-}
+:root { --orange: #F4521E; --dark: #1a1a1a; --light: #f5f5f5; --border: #e0e0e0; }
+body { font-family: 'Inter', sans-serif; background: var(--light); color: var(--dark); line-height: 1.6; }
 .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
-header {
-  background: white;
-  border-bottom: 2px solid var(--orange);
-  padding: 20px 0;
-  margin-bottom: 40px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-.header-content {
-  max-width: 900px; margin: 0 auto; padding: 0 20px;
-  display: flex; justify-content: space-between; align-items: center;
-}
+header { background: white; border-bottom: 2px solid var(--orange); padding: 20px 0; margin-bottom: 40px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.header-content { max-width: 900px; margin: 0 auto; padding: 0 20px; display: flex; justify-content: space-between; align-items: center; }
 .logo { font-family: 'Poppins', sans-serif; font-size: 28px; font-weight: 800; color: var(--orange); }
 .status { padding: 8px 16px; background: #e8f4f0; border-radius: 20px; font-size: 12px; font-weight: 600; color: #00897b; }
 .tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid var(--border); }
-.tab {
-  padding: 12px 20px; background: none; border: none; font-size: 14px;
-  font-weight: 600; cursor: pointer; color: #666; border-bottom: 3px solid transparent;
-}
+.tab { padding: 12px 20px; background: none; border: none; font-size: 14px; font-weight: 600; cursor: pointer; color: #666; border-bottom: 3px solid transparent; }
 .tab.active { color: var(--orange); border-bottom-color: var(--orange); }
-.content {
-  background: white; border-radius: 12px; padding: 40px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-}
+.content { background: white; border-radius: 12px; padding: 40px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
 .section { display: none; }
-.section.active { display: block; animation: slideIn 0.3s ease; }
-@keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.section.active { display: block; }
 .form-group { margin-bottom: 25px; }
 label { display: block; font-weight: 600; margin-bottom: 8px; color: var(--dark); font-size: 14px; }
-input, select, textarea {
-  width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px;
-  font-family: 'Inter', sans-serif; font-size: 14px;
-}
-input:focus, select:focus, textarea:focus {
-  outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(244, 82, 30, 0.1);
-}
+input, select, textarea { width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 14px; }
+input:focus, select:focus, textarea:focus { outline: none; border-color: var(--orange); box-shadow: 0 0 0 3px rgba(244, 82, 30, 0.1); }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
 @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
-.contract {
-  background: #fafafa; border: 1px solid var(--border); border-radius: 8px;
-  padding: 30px; margin-bottom: 30px; font-size: 13px; line-height: 1.8; color: #333;
-}
-.contract h2 { color: var(--orange); font-size: 18px; margin-bottom: 20px; text-align: center; }
+.contract { background: #fafafa; border: 1px solid var(--border); border-radius: 8px; padding: 30px; margin-bottom: 30px; font-size: 13px; line-height: 1.8; }
+.contract h2 { color: var(--orange); text-align: center; margin-bottom: 20px; }
 .signature-canvas { 
-  border: 2px solid var(--orange); 
+  border: 2px dashed var(--orange); 
   border-radius: 8px; 
-  cursor: crosshair; 
   background: white; 
   width: 100%; 
-  height: 160px; 
+  height: 180px; 
   touch-action: none;
+  cursor: crosshair;
 }
-.clear-btn { 
-  padding: 8px 16px; background: #f5f5f5; border: 1px solid var(--border); 
-  border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; margin-top: 8px;
-}
+.clear-btn { padding: 10px 16px; background: #f5f5f5; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; margin-top: 10px; }
 .button-group { display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px; }
-button {
-  padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600;
-  cursor: pointer; transition: all 0.3s; font-size: 14px;
-}
+button { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; }
 .btn-primary { background: var(--orange); color: white; }
-.btn-primary:hover { background: #e03a0c; transform: translateY(-2px); }
+.btn-primary:hover { background: #e03a0c; }
 .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
 .btn-secondary { background: white; color: var(--orange); border: 2px solid var(--orange); }
 .success-message { background: #e8f5e9; border-left: 4px solid #4caf50; padding: 20px; border-radius: 8px; margin-bottom: 20px; display: none; }
 .success-message.show { display: block; }
 .info-box { background: #e3f2fd; border-left: 4px solid #2196f3; padding: 20px; border-radius: 8px; margin-bottom: 25px; }
-.progress { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 30px; }
+.progress { height: 4px; background: var(--border); margin-bottom: 30px; border-radius: 2px; overflow: hidden; }
 .progress-bar { height: 100%; background: var(--orange); width: 33%; transition: width 0.3s; }
-.loading { display: none; text-align: center; color: var(--orange); font-weight: 600; margin-top: 10px; }
+.loading { display: none; text-align: center; color: var(--orange); font-weight: 600; margin: 15px 0; }
 .loading.show { display: block; }
 </style>
 </head>
@@ -106,26 +66,21 @@ button {
 
 <div class="container">
   <div class="tabs">
-    <button class="tab active" onclick="showTab('profil')">1. Profil Partenaire</button>
+    <button class="tab active" onclick="showTab('profil')">1. Profil</button>
     <button class="tab" onclick="showTab('contrat')">2. Contrat</button>
     <button class="tab" onclick="showTab('signature')">3. Signature</button>
   </div>
 
-  <div class="progress">
-    <div class="progress-bar" id="progressBar"></div>
-  </div>
+  <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
 
   <div class="content">
 
-    <!-- TAB 1: PROFIL -->
+    <!-- TAB 1 -->
     <div class="section active" id="profil-section">
-      <div class="info-box">
-        <strong>ℹ️ Bienvenue chez VENDOB</strong>
-        <p>Remplissez votre profil pour devenir partenaire régional.</p>
-      </div>
+      <div class="info-box"><strong>ℹ️ Bienvenue</strong><p>Remplissez votre profil partenaire.</p></div>
       <form id="formProfil">
-        <!-- Vos champs de formulaire (je les ai gardés comme avant) -->
-        <h3 style="color: var(--orange); margin: 25px 0 15px;">📋 Informations Personnelles</h3>
+        <!-- Ajoutez ici tous vos champs de formulaire comme avant -->
+        <h3 style="color:var(--orange);margin:20px 0 10px;">Informations Personnelles</h3>
         <div class="form-grid">
           <div class="form-group"><label>Nom Complet *</label><input type="text" name="nom" required></div>
           <div class="form-group"><label>Email *</label><input type="email" name="email" required></div>
@@ -135,77 +90,68 @@ button {
           <div class="form-group"><label>WhatsApp</label><input type="tel" name="whatsapp"></div>
         </div>
 
-        <h3 style="color: var(--orange); margin: 25px 0 15px;">🌍 Informations Régionales</h3>
+        <h3 style="color:var(--orange);margin:25px 0 10px;">Informations Régionales</h3>
         <div class="form-group">
-          <label>Pays de Partenariat *</label>
+          <label>Pays *</label>
           <select name="pays" required>
             <option value="">-- Sélectionner --</option>
             <option value="Bénin">Bénin</option>
             <option value="Côte d'Ivoire">Côte d'Ivoire</option>
             <option value="Togo">Togo</option>
             <option value="Nigeria">Nigeria</option>
-            <!-- Ajoute les autres pays si besoin -->
           </select>
         </div>
         <div class="form-grid">
-          <div class="form-group"><label>Ville Principale *</label><input type="text" name="ville" required></div>
+          <div class="form-group"><label>Ville *</label><input type="text" name="ville" required></div>
           <div class="form-group"><label>Zone Couverte *</label><input type="text" name="zone" required></div>
         </div>
 
         <div class="button-group">
           <button type="button" class="btn-secondary" onclick="resetForm()">Réinitialiser</button>
-          <button type="button" class="btn-primary" onclick="nextTab('contrat')">Continuer vers Contrat →</button>
+          <button type="button" class="btn-primary" onclick="nextTab('contrat')">Continuer →</button>
         </div>
       </form>
     </div>
 
-    <!-- TAB 2: CONTRAT -->
+    <!-- TAB 2 -->
     <div class="section" id="contrat-section">
       <div class="contract" id="contractContainer">
         <h2>📄 CONTRAT DE PARTENARIAT RÉGIONAL VENDOB</h2>
-        <p style="text-align: center; font-style: italic; margin: 20px 0;">
-          Entre VENDOB et <strong><span id="contractNom">[Nom]</span></strong>
-        </p>
-        <!-- Tu peux garder ou enrichir le contenu du contrat -->
-        <p>Le présent contrat définit les conditions de partenariat régional...</p>
+        <p style="text-align:center; font-style:italic;">Entre VENDOB et <strong><span id="contractNom">[Nom du Partenaire]</span></strong></p>
+        <!-- Contenu du contrat -->
       </div>
-
       <div class="button-group">
         <button type="button" class="btn-secondary" onclick="showTab('profil')">← Retour</button>
         <button type="button" class="btn-primary" onclick="nextTab('signature')">Continuer vers Signature →</button>
       </div>
     </div>
 
-    <!-- TAB 3: SIGNATURE -->
+    <!-- TAB 3 : SIGNATURE -->
     <div class="section" id="signature-section">
       <div class="success-message" id="successMsg">
         <h4>✅ Contrat signé et envoyé avec succès !</h4>
-        <p>Le PDF avec votre signature manuscrite a été envoyé à VENDOB.</p>
       </div>
 
       <div class="info-box">
-        <strong>✍️ Signature Manuscrite</strong>
-        <p>Signez ci-dessous avec votre doigt ou votre stylet :</p>
+        <strong>✍️ Signature Manuscrite du Partenaire</strong>
+        <p>Signez avec votre doigt ou votre souris/stylet :</p>
       </div>
 
-      <div class="signature-section">
-        <h3>Signature du Partenaire Régional</h3>
-        <canvas id="signaturePad" class="signature-canvas"></canvas>
-        <button type="button" class="clear-btn" onclick="clearSignature()">✕ Effacer la signature</button>
+      <canvas id="signaturePad" class="signature-canvas"></canvas>
+      <button type="button" class="clear-btn" onclick="clearSignature()">Effacer la signature</button>
 
-        <div style="margin-top: 20px;">
-          <label style="display: flex; align-items: center; gap: 10px; font-weight: 500;">
-            <input type="checkbox" id="accepteConditions" required>
-            J'accepte les termes du contrat et je signe numériquement
-          </label>
-        </div>
+      <div style="margin-top:20px;">
+        <label style="display:flex; align-items:center; gap:10px;">
+          <input type="checkbox" id="accepteConditions" required> 
+          J'accepte les termes du contrat et je signe
+        </label>
       </div>
 
-      <div class="loading" id="loading">⏳ Génération du PDF avec signature et envoi en cours...</div>
+      <div class="loading" id="loading">⏳ Génération du PDF avec votre signature et envoi...</div>
 
       <div class="button-group">
-        <button type="button" class="btn-secondary" onclick="showTab('contrat')">← Retour Contrat</button>
-        <button type="button" class="btn-primary" id="submitBtn" onclick="submitForm()">✅ Signer & Envoyer le Contrat</button>
+        <button type="button" class="btn-secondary" onclick="showTab('contrat')">← Retour</button>
+        <button type="button" class="btn-primary" id="submitBtn" onclick="submitForm()">✅ Signer & Envoyer</button>
       </div>
     </div>
 
@@ -213,31 +159,36 @@ button {
 </div>
 
 <script>
-// Initialisation EmailJS
+// ====================== INITIALISATION EMAILJS ======================
 emailjs.init("rGXngAsslApFe-7us");
 
-// Signature Canvas
-const canvas = document.getElementById('signaturePad');
-const ctx = canvas.getContext('2d');
-let isDrawing = false;
-let lastX = 0, lastY = 0;
+// ====================== CANVAS SIGNATURE ======================
+// Déclaration AVANT toute utilisation → corrige l'erreur "before initialization"
+let canvas, ctx, isDrawing = false, lastX = 0, lastY = 0;
 
-function resizeCanvas() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+function initSignaturePad() {
+  canvas = document.getElementById('signaturePad');
+  if (!canvas) return;
+  ctx = canvas.getContext('2d');
+
+  function resize() {
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Souris
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseout', stopDrawing);
+
+  // Touch (mobile)
+  canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
+  canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
+  canvas.addEventListener('touchend', stopDrawing);
 }
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
-
-// Support mobile + desktop
-canvas.addEventListener('mousedown', startDrawing);
-canvas.addEventListener('mousemove', draw);
-canvas.addEventListener('mouseup', stopDrawing);
-canvas.addEventListener('mouseout', stopDrawing);
-
-canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
-canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
-canvas.addEventListener('touchend', stopDrawing);
 
 function startDrawing(e) {
   isDrawing = true;
@@ -253,7 +204,7 @@ function draw(e) {
   const y = e.clientY - rect.top;
 
   ctx.strokeStyle = '#F4521E';
-  ctx.lineWidth = 3;
+  ctx.lineWidth = 3.5;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
   ctx.beginPath();
@@ -265,15 +216,13 @@ function draw(e) {
   lastY = y;
 }
 
-function stopDrawing() {
-  isDrawing = false;
-}
+function stopDrawing() { isDrawing = false; }
 
 function clearSignature() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// Navigation
+// ====================== FONCTIONS TABS ======================
 function showTab(tabName) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
@@ -284,7 +233,7 @@ function showTab(tabName) {
 
 function nextTab(tabName) {
   if (tabName === 'contrat') {
-    const nom = document.querySelector('[name="nom"]').value || '[Nom du Partenaire]';
+    const nom = document.querySelector('[name="nom"]')?.value || '[Nom du Partenaire]';
     document.getElementById('contractNom').textContent = nom;
   }
   showTab(tabName);
@@ -300,75 +249,47 @@ function resetForm() {
   clearSignature();
 }
 
-// Générer PDF avec signature intégrée
+// ====================== GÉNÉRATION PDF ======================
 function generateContractPDF(signatureDataURL) {
   const { jsPDF } = window.jspdf;
   const pdf = new jsPDF('p', 'mm', 'a4');
   const form = document.getElementById('formProfil');
+  const nom = form.elements['nom']?.value || 'Partenaire';
 
-  const nom = form.elements['nom'].value || 'Partenaire';
-  const email = form.elements['email'].value;
-  const telephone = form.elements['telephone'].value;
-  const pays = form.elements['pays'].value;
-  const ville = form.elements['ville'].value;
-  const zone = form.elements['zone'].value;
+  let y = 25;
+  const margin = 20;
 
-  let y = 20;
-  const margin = 15;
-
-  // En-tête
   pdf.setFontSize(18);
   pdf.setTextColor(244, 82, 30);
   pdf.text('CONTRAT DE PARTENARIAT RÉGIONAL VENDOB', margin, y);
-  y += 15;
+  y += 20;
 
   pdf.setFontSize(11);
   pdf.setTextColor(0, 0, 0);
-  pdf.text(`Partenaire : ${nom}`, margin, y); y += 7;
-  pdf.text(`Email : ${email} | Téléphone : ${telephone}`, margin, y); y += 7;
-  pdf.text(`Pays : ${pays} | Ville : ${ville} | Zone : ${zone}`, margin, y);
-  y += 20;
+  pdf.text(`Partenaire : ${nom}`, margin, y); y += 10;
 
-  // Contenu du contrat (simplifié)
-  pdf.setFontSize(12);
-  const lines = [
-    "1. Objet : Partenariat régional pour le développement de la plateforme VENDOB.",
-    "2. Responsabilités du partenaire : Recrutement de fournisseurs, gestion logistique et support client.",
-    "3. Commission : Le partenaire bénéficie d'une commission attractive sur les ventes réalisées.",
-    "4. Exclusivité : Le partenaire est l'unique représentant VENDOB dans sa zone.",
-    "5. Durée : Contrat à durée indéterminée, résiliable avec un préavis de 30 jours."
-  ];
+  // Ajoutez ici plus de contenu si vous voulez
 
-  lines.forEach(line => {
-    if (y > 240) { pdf.addPage(); y = 20; }
-    pdf.text(line, margin, y);
-    y += 10;
-  });
-
-  // Signature
   if (signatureDataURL) {
-    if (y > 200) { pdf.addPage(); y = 20; }
-    y += 15;
-    pdf.setFontSize(11);
+    y += 20;
     pdf.text("Signature du Partenaire :", margin, y);
-    y += 8;
-    pdf.addImage(signatureDataURL, 'PNG', margin, y, 80, 40);
-    y += 45;
+    y += 10;
+    pdf.addImage(signatureDataURL, 'PNG', margin, y, 90, 45);
   }
 
-  pdf.text(`Signé le : ${new Date().toLocaleDateString('fr-FR')}`, margin, y + 10);
+  pdf.text(`Date : ${new Date().toLocaleDateString('fr-FR')}`, margin, y + 60);
 
   return pdf;
 }
 
-// Soumission
+// ====================== SOUMISSION ======================
 async function submitForm() {
   const checkbox = document.getElementById('accepteConditions');
   const form = document.getElementById('formProfil');
   const submitBtn = document.getElementById('submitBtn');
   const loading = document.getElementById('loading');
 
-  if (!checkbox.checked) return alert("❌ Veuillez accepter les conditions");
+  if (!checkbox.checked) return alert("❌ Veuillez cocher la case d'acceptation");
   if (!form.checkValidity()) return alert("❌ Veuillez remplir tous les champs obligatoires");
 
   loading.classList.add('show');
@@ -376,41 +297,41 @@ async function submitForm() {
 
   try {
     const formData = new FormData(form);
-    const data = Object.fromEntries(formData);
+    const data = Object.fromEntries(formData.entries());
 
-    const signatureDataURL = canvas.toDataURL('image/png');
+    const signatureDataURL = canvas ? canvas.toDataURL('image/png') : null;
 
-    // Générer PDF avec la signature
     const pdf = generateContractPDF(signatureDataURL);
-    let pdfBase64 = pdf.output('datauristring');
-    pdfBase64 = pdfBase64.split(',')[1]; // Retirer le préfixe
+    let pdfBase64 = pdf.output('datauristring').split(',')[1];
 
     const templateParams = {
       to_email: 'yezidagnide@gmail.com',
       from_name: data.nom,
       from_email: data.email,
-      subject: `🌍 Nouvelle demande de partenariat - \( {data.nom} ( \){data.pays})`,
-      message: `Nouvelle candidature de partenariat régional reçue.\nNom : ${data.nom}\nPays : ${data.pays}\nVille : ${data.ville}`,
-      
-      // Pièce jointe PDF
+      subject: `🌍 Nouvelle demande de partenariat - \( {data.nom} ( \){data.pays || ''})`,
+      message: `Nouvelle candidature reçue de ${data.nom} - ${data.pays || ''}`,
       pdf_contract: pdfBase64,
-      pdf_filename: `Contrat_VENDOB_\( {data.nom.replace(/[^a-zA-Z0-9]/g, '_')}_ \){data.pays}.pdf`
+      pdf_filename: `Contrat_VENDOB_${(data.nom || 'Partenaire').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`
     };
 
     await emailjs.send('service_geizbmp', 'partenariat_regional', templateParams);
 
     document.getElementById('successMsg').classList.add('show');
     loading.classList.remove('show');
-
-    setTimeout(() => alert("✅ Contrat signé avec succès ! L'email avec le PDF a été envoyé."), 1500);
+    alert("✅ Contrat signé avec succès ! L'email avec le PDF a été envoyé.");
 
   } catch (error) {
     console.error(error);
-    alert("❌ Erreur lors de l'envoi : " + (error.text || error.message));
+    alert("❌ Erreur : " + (error.text || error.message));
     loading.classList.remove('show');
     submitBtn.disabled = false;
   }
 }
+
+// ====================== INITIALISATION AU CHARGEMENT ======================
+window.onload = function() {
+  initSignaturePad();   // Initialisation du canvas en premier
+};
 </script>
 </body>
-</html>
+      </html>
