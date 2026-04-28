@@ -31,15 +31,18 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--o
 .contract { background: #fafafa; border: 1px solid var(--border); border-radius: 8px; padding: 30px; margin-bottom: 30px; font-size: 13px; line-height: 1.8; }
 .contract h2 { color: var(--orange); text-align: center; margin-bottom: 20px; }
 .signature-canvas { 
-  border: 2px dashed var(--orange); 
-  border-radius: 8px; 
-  background: white; 
+  border: 3px dashed var(--orange); 
+  border-radius: 12px; 
+  background: #fff; 
   width: 100%; 
-  height: 180px; 
-  touch-action: none;
+  height: 220px; 
+  touch-action: none;           /* Très important pour mobile */
   cursor: crosshair;
 }
-.clear-btn { padding: 10px 16px; background: #f5f5f5; border: 1px solid var(--border); border-radius: 6px; cursor: pointer; margin-top: 10px; }
+.clear-btn { 
+  padding: 12px 20px; background: #f5f5f5; border: 1px solid var(--border); 
+  border-radius: 8px; cursor: pointer; margin-top: 12px; font-weight: 600;
+}
 .button-group { display: flex; gap: 15px; justify-content: flex-end; margin-top: 30px; }
 button { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 14px; }
 .btn-primary { background: var(--orange); color: white; }
@@ -75,79 +78,24 @@ button { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600;
 
   <div class="content">
 
-    <!-- TAB 1 -->
-    <div class="section active" id="profil-section">
-      <div class="info-box"><strong>ℹ️ Bienvenue</strong><p>Remplissez votre profil partenaire.</p></div>
-      <form id="formProfil">
-        <!-- Ajoutez ici tous vos champs de formulaire comme avant -->
-        <h3 style="color:var(--orange);margin:20px 0 10px;">Informations Personnelles</h3>
-        <div class="form-grid">
-          <div class="form-group"><label>Nom Complet *</label><input type="text" name="nom" required></div>
-          <div class="form-group"><label>Email *</label><input type="email" name="email" required></div>
-        </div>
-        <div class="form-grid">
-          <div class="form-group"><label>Téléphone *</label><input type="tel" name="telephone" required></div>
-          <div class="form-group"><label>WhatsApp</label><input type="tel" name="whatsapp"></div>
-        </div>
-
-        <h3 style="color:var(--orange);margin:25px 0 10px;">Informations Régionales</h3>
-        <div class="form-group">
-          <label>Pays *</label>
-          <select name="pays" required>
-            <option value="">-- Sélectionner --</option>
-            <option value="Bénin">Bénin</option>
-            <option value="Côte d'Ivoire">Côte d'Ivoire</option>
-            <option value="Togo">Togo</option>
-            <option value="Nigeria">Nigeria</option>
-          </select>
-        </div>
-        <div class="form-grid">
-          <div class="form-group"><label>Ville *</label><input type="text" name="ville" required></div>
-          <div class="form-group"><label>Zone Couverte *</label><input type="text" name="zone" required></div>
-        </div>
-
-        <div class="button-group">
-          <button type="button" class="btn-secondary" onclick="resetForm()">Réinitialiser</button>
-          <button type="button" class="btn-primary" onclick="nextTab('contrat')">Continuer →</button>
-        </div>
-      </form>
-    </div>
-
-    <!-- TAB 2 -->
-    <div class="section" id="contrat-section">
-      <div class="contract" id="contractContainer">
-        <h2>📄 CONTRAT DE PARTENARIAT RÉGIONAL VENDOB</h2>
-        <p style="text-align:center; font-style:italic;">Entre VENDOB et <strong><span id="contractNom">[Nom du Partenaire]</span></strong></p>
-        <!-- Contenu du contrat -->
-      </div>
-      <div class="button-group">
-        <button type="button" class="btn-secondary" onclick="showTab('profil')">← Retour</button>
-        <button type="button" class="btn-primary" onclick="nextTab('signature')">Continuer vers Signature →</button>
-      </div>
-    </div>
-
-    <!-- TAB 3 : SIGNATURE -->
-    <div class="section" id="signature-section">
-      <div class="success-message" id="successMsg">
-        <h4>✅ Contrat signé et envoyé avec succès !</h4>
-      </div>
-
+    <!-- TAB 3: SIGNATURE (la plus importante pour le test) -->
+    <div class="section active" id="signature-section">   <!-- Je l'ai mise active pour tester plus facilement -->
       <div class="info-box">
         <strong>✍️ Signature Manuscrite du Partenaire</strong>
-        <p>Signez avec votre doigt ou votre souris/stylet :</p>
+        <p>Signez avec votre doigt directement sur l'écran :</p>
       </div>
 
       <canvas id="signaturePad" class="signature-canvas"></canvas>
-      <button type="button" class="clear-btn" onclick="clearSignature()">Effacer la signature</button>
+      <button type="button" class="clear-btn" onclick="clearSignature()">🗑️ Effacer la signature</button>
 
-      <div style="margin-top:20px;">
-        <label style="display:flex; align-items:center; gap:10px;">
+      <div style="margin-top:25px;">
+        <label style="display:flex; align-items:center; gap:10px; font-size:15px;">
           <input type="checkbox" id="accepteConditions" required> 
           J'accepte les termes du contrat et je signe
         </label>
       </div>
 
-      <div class="loading" id="loading">⏳ Génération du PDF avec votre signature et envoi...</div>
+      <div class="loading" id="loading">⏳ Génération du PDF avec votre signature...</div>
 
       <div class="button-group">
         <button type="button" class="btn-secondary" onclick="showTab('contrat')">← Retour</button>
@@ -159,179 +107,131 @@ button { padding: 12px 24px; border: none; border-radius: 8px; font-weight: 600;
 </div>
 
 <script>
-// ====================== INITIALISATION EMAILJS ======================
+// Initialisation EmailJS
 emailjs.init("rGXngAsslApFe-7us");
 
-// ====================== CANVAS SIGNATURE ======================
-// Déclaration AVANT toute utilisation → corrige l'erreur "before initialization"
-let canvas, ctx, isDrawing = false, lastX = 0, lastY = 0;
+let canvas, ctx;
 
+// Initialisation sécurisée du canvas
 function initSignaturePad() {
   canvas = document.getElementById('signaturePad');
-  if (!canvas) return;
-  ctx = canvas.getContext('2d');
+  if (!canvas) return console.error("Canvas non trouvé");
 
-  function resize() {
-    canvas.width = canvas.offsetWidth;
-    canvas.height = canvas.offsetHeight;
+  ctx = canvas.getContext('2d', { alpha: true });
+
+  // Ajustement haute résolution (important sur mobile)
+  function resizeCanvas() {
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * 2;   // 2x pour meilleure qualité
+    canvas.height = rect.height * 2;
+    ctx.scale(2, 2);                 // Scale le contexte
   }
-  resize();
-  window.addEventListener('resize', resize);
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
 
-  // Souris
-  canvas.addEventListener('mousedown', startDrawing);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup', stopDrawing);
-  canvas.addEventListener('mouseout', stopDrawing);
+  let isDrawing = false;
+  let lastX = 0, lastY = 0;
 
-  // Touch (mobile)
-  canvas.addEventListener('touchstart', (e) => { e.preventDefault(); startDrawing(e.touches[0]); });
-  canvas.addEventListener('touchmove', (e) => { e.preventDefault(); draw(e.touches[0]); });
-  canvas.addEventListener('touchend', stopDrawing);
+  // === MOUSE ===
+  canvas.addEventListener('mousedown', (e) => {
+    isDrawing = true;
+    const rect = canvas.getBoundingClientRect();
+    lastX = (e.clientX - rect.left);
+    lastY = (e.clientY - rect.top);
+  });
+
+  canvas.addEventListener('mousemove', (e) => {
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const x = (e.clientX - rect.left);
+    const y = (e.clientY - rect.top);
+
+    ctx.strokeStyle = '#F4521E';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    lastX = x;
+    lastY = y;
+  });
+
+  canvas.addEventListener('mouseup', () => isDrawing = false);
+  canvas.addEventListener('mouseout', () => isDrawing = false);
+
+  // === TOUCH (Mobile) - Version renforcée ===
+  canvas.addEventListener('touchstart', (e) => {
+    e.preventDefault();           // Très important
+    isDrawing = true;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    lastX = (touch.clientX - rect.left);
+    lastY = (touch.clientY - rect.top);
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    e.preventDefault();           // Très important
+    if (!isDrawing) return;
+    const rect = canvas.getBoundingClientRect();
+    const touch = e.touches[0];
+    const x = (touch.clientX - rect.left);
+    const y = (touch.clientY - rect.top);
+
+    ctx.strokeStyle = '#F4521E';
+    ctx.lineWidth = 4;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.beginPath();
+    ctx.moveTo(lastX, lastY);
+    ctx.lineTo(x, y);
+    ctx.stroke();
+
+    lastX = x;
+    lastY = y;
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', () => isDrawing = false);
 }
-
-function startDrawing(e) {
-  isDrawing = true;
-  const rect = canvas.getBoundingClientRect();
-  lastX = e.clientX - rect.left;
-  lastY = e.clientY - rect.top;
-}
-
-function draw(e) {
-  if (!isDrawing) return;
-  const rect = canvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
-
-  ctx.strokeStyle = '#F4521E';
-  ctx.lineWidth = 3.5;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(x, y);
-  ctx.stroke();
-
-  lastX = x;
-  lastY = y;
-}
-
-function stopDrawing() { isDrawing = false; }
 
 function clearSignature() {
   if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// ====================== FONCTIONS TABS ======================
+// Fonctions de navigation (simplifiées)
 function showTab(tabName) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.getElementById(tabName + '-section').classList.add('active');
-  document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
-  updateProgress(tabName);
 }
 
-function nextTab(tabName) {
-  if (tabName === 'contrat') {
-    const nom = document.querySelector('[name="nom"]')?.value || '[Nom du Partenaire]';
-    document.getElementById('contractNom').textContent = nom;
-  }
-  showTab(tabName);
-}
-
-function updateProgress(tabName) {
-  const progress = tabName === 'profil' ? 33 : tabName === 'contrat' ? 66 : 100;
-  document.getElementById('progressBar').style.width = progress + '%';
-}
-
-function resetForm() {
-  document.getElementById('formProfil').reset();
-  clearSignature();
-}
-
-// ====================== GÉNÉRATION PDF ======================
-function generateContractPDF(signatureDataURL) {
-  const { jsPDF } = window.jspdf;
-  const pdf = new jsPDF('p', 'mm', 'a4');
-  const form = document.getElementById('formProfil');
-  const nom = form.elements['nom']?.value || 'Partenaire';
-
-  let y = 25;
-  const margin = 20;
-
-  pdf.setFontSize(18);
-  pdf.setTextColor(244, 82, 30);
-  pdf.text('CONTRAT DE PARTENARIAT RÉGIONAL VENDOB', margin, y);
-  y += 20;
-
-  pdf.setFontSize(11);
-  pdf.setTextColor(0, 0, 0);
-  pdf.text(`Partenaire : ${nom}`, margin, y); y += 10;
-
-  // Ajoutez ici plus de contenu si vous voulez
-
-  if (signatureDataURL) {
-    y += 20;
-    pdf.text("Signature du Partenaire :", margin, y);
-    y += 10;
-    pdf.addImage(signatureDataURL, 'PNG', margin, y, 90, 45);
-  }
-
-  pdf.text(`Date : ${new Date().toLocaleDateString('fr-FR')}`, margin, y + 60);
-
-  return pdf;
-}
-
-// ====================== SOUMISSION ======================
-async function submitForm() {
+function submitForm() {
   const checkbox = document.getElementById('accepteConditions');
-  const form = document.getElementById('formProfil');
-  const submitBtn = document.getElementById('submitBtn');
-  const loading = document.getElementById('loading');
+  if (!checkbox.checked) return alert("❌ Veuillez accepter les conditions");
 
-  if (!checkbox.checked) return alert("❌ Veuillez cocher la case d'acceptation");
-  if (!form.checkValidity()) return alert("❌ Veuillez remplir tous les champs obligatoires");
+  const loading = document.getElementById('loading');
+  const submitBtn = document.getElementById('submitBtn');
 
   loading.classList.add('show');
   submitBtn.disabled = true;
 
   try {
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-
     const signatureDataURL = canvas ? canvas.toDataURL('image/png') : null;
-
-    const pdf = generateContractPDF(signatureDataURL);
-    let pdfBase64 = pdf.output('datauristring').split(',')[1];
-
-    const templateParams = {
-      to_email: 'yezidagnide@gmail.com',
-      from_name: data.nom,
-      from_email: data.email,
-      subject: `🌍 Nouvelle demande de partenariat - \( {data.nom} ( \){data.pays || ''})`,
-      message: `Nouvelle candidature reçue de ${data.nom} - ${data.pays || ''}`,
-      pdf_contract: pdfBase64,
-      pdf_filename: `Contrat_VENDOB_${(data.nom || 'Partenaire').replace(/[^a-zA-Z0-9]/g, '_')}.pdf`
-    };
-
-    await emailjs.send('service_geizbmp', 'partenariat_regional', templateParams);
-
-    document.getElementById('successMsg').classList.add('show');
-    loading.classList.remove('show');
-    alert("✅ Contrat signé avec succès ! L'email avec le PDF a été envoyé.");
-
-  } catch (error) {
-    console.error(error);
-    alert("❌ Erreur : " + (error.text || error.message));
+    alert("Signature capturée ! (Test)\n\nSi tu vois ce message, la signature fonctionne.\nOn va maintenant améliorer le PDF.");
+    // Ici tu pourras remettre l'envoi EmailJS plus tard
+  } catch (e) {
+    alert("Erreur : " + e.message);
+  } finally {
     loading.classList.remove('show');
     submitBtn.disabled = false;
   }
 }
 
-// ====================== INITIALISATION AU CHARGEMENT ======================
-window.onload = function() {
-  initSignaturePad();   // Initialisation du canvas en premier
-};
+// Lancement
+document.addEventListener('DOMContentLoaded', () => {
+  initSignaturePad();
+});
 </script>
 </body>
-      </html>
+</html>
