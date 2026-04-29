@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Partenariat VENDOB - Test EmailJS</title>
+<title>Partenariat Régional VENDOB</title>
 <script src="https://cdn.emailjs.com/sdk/3.11.0/email.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 * {
   margin: 0;
@@ -12,95 +13,96 @@
   box-sizing: border-box;
 }
 
+:root {
+  --orange: #F4521E;
+  --dark: #1a1a1a;
+}
+
 body {
-  font-family: Arial, sans-serif;
-  background: #f0f0f0;
-  padding: 20px;
+  font-family: 'Inter', sans-serif;
+  background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+  color: var(--dark);
+  padding: 40px 20px;
+  min-height: 100vh;
 }
 
 .container {
-  max-width: 900px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
-.box {
+header {
   background: white;
-  padding: 20px;
-  margin-bottom: 20px;
-  border-radius: 8px;
-  border-left: 4px solid #F4521E;
+  padding: 30px;
+  text-align: center;
+  border-radius: 12px;
+  border-bottom: 3px solid var(--orange);
+  margin-bottom: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.logo {
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: 900;
+  color: var(--orange);
+}
+
+.content {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
 h2 {
-  color: #F4521E;
-  margin-bottom: 15px;
-}
-
-input, textarea, select {
-  width: 100%;
-  padding: 10px;
+  color: var(--orange);
   margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-family: Arial;
 }
 
-button {
-  background: #F4521E;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-weight: bold;
-  margin: 10px 5px 10px 0;
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 30px;
 }
 
-button:hover {
-  background: #d63d15;
+.form-group {
+  margin-bottom: 18px;
 }
 
-button:disabled {
-  background: #ccc;
-  cursor: not-allowed;
+label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: var(--dark);
 }
 
-.log-box {
-  background: #1a1a1a;
-  color: #0f0;
-  padding: 15px;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  font-size: 12px;
-  max-height: 400px;
-  overflow-y: auto;
-  margin: 10px 0;
-  white-space: pre-wrap;
-  word-break: break-all;
+input, select, textarea {
+  width: 100%;
+  padding: 11px;
+  border: 1.5px solid #ddd;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: border 0.3s;
 }
 
-.success {
-  background: #d4edda;
-  color: #155724;
-  border-left-color: #28a745;
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--orange);
+  box-shadow: 0 0 0 3px rgba(244, 82, 30, 0.1);
 }
 
-.error {
-  background: #f8d7da;
-  color: #721c24;
-  border-left-color: #f44336;
-}
-
-.info {
-  background: #d1ecf1;
-  color: #0c5460;
-  border-left-color: #17a2b8;
+textarea {
+  resize: vertical;
+  min-height: 70px;
 }
 
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 15px;
 }
 
 @media (max-width: 600px) {
@@ -109,21 +111,94 @@ button:disabled {
   }
 }
 
-.status-box {
-  padding: 15px;
-  border-radius: 4px;
-  margin: 10px 0;
-  font-weight: bold;
+.section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--orange);
+  margin: 25px 0 15px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
 }
 
-.status-ok {
+button {
+  width: 100%;
+  padding: 14px;
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-top: 25px;
+}
+
+button:hover:not(:disabled) {
+  background: #e03a0c;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(244, 82, 30, 0.3);
+}
+
+button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.alert {
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  display: none;
+  animation: slideIn 0.3s ease;
+}
+
+.alert.show {
+  display: block;
+}
+
+.alert-success {
   background: #d4edda;
+  border-left: 4px solid #28a745;
   color: #155724;
 }
 
-.status-error {
+.alert-error {
   background: #f8d7da;
+  border-left: 4px solid #dc3545;
   color: #721c24;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.loading {
+  display: none;
+  text-align: center;
+  padding: 15px;
+  color: var(--orange);
+}
+
+.loading.show {
+  display: block;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-top: 2px solid var(--orange);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 </style>
 </head>
@@ -131,178 +206,187 @@ button:disabled {
 
 <div class="container">
 
-<div class="box">
-  <h2>🔧 TEST EmailJS - VENDOB Partenariat</h2>
-  <p>Cette page teste directement votre configuration EmailJS</p>
-</div>
+<header>
+  <div class="logo">🚀 VENDOB</div>
+  <p style="color: #666; margin-top: 10px;">Partenariat Régional</p>
+</header>
 
-<!-- STATUS EmailJS -->
-<div id="statusBox" class="box info">
-  <strong>🔍 Statut EmailJS:</strong>
-  <div id="statusText">Chargement...</div>
-</div>
+<div class="content">
+  <h2>Formulaire de Partenariat</h2>
+  <p class="subtitle">Remplissez tous les champs et soumettez votre demande</p>
 
-<!-- FORMULAIRE SIMPLE -->
-<div class="box">
-  <h2>📝 Formulaire Simple</h2>
-  
-  <form id="testForm">
-    <div class="form-grid">
-      <input type="text" id="nom" placeholder="Votre nom *" required>
-      <input type="email" id="email" placeholder="Votre email *" required>
-    </div>
+  <div id="alert" class="alert"></div>
+  <div id="loading" class="loading"><div class="spinner"></div> Envoi en cours...</div>
+
+  <form id="form">
+
+    <!-- INFOS PERSONNELLES -->
+    <div class="section-title">👤 Informations Personnelles</div>
     
     <div class="form-grid">
-      <input type="tel" id="telephone" placeholder="Téléphone *" required>
-      <select id="pays" required>
-        <option value="">-- Pays --</option>
+      <div class="form-group">
+        <label>Nom *</label>
+        <input type="text" name="nom" required>
+      </div>
+      <div class="form-group">
+        <label>Email *</label>
+        <input type="email" name="email" required>
+      </div>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Téléphone *</label>
+        <input type="tel" name="telephone" required>
+      </div>
+      <div class="form-group">
+        <label>WhatsApp</label>
+        <input type="tel" name="whatsapp">
+      </div>
+    </div>
+
+    <!-- INFOS RÉGIONALES -->
+    <div class="section-title">🌍 Informations Régionales</div>
+    
+    <div class="form-group">
+      <label>Pays *</label>
+      <select name="pays" required>
+        <option value="">-- Sélectionner --</option>
         <option value="Côte d'Ivoire">Côte d'Ivoire</option>
         <option value="Nigeria">Nigeria</option>
         <option value="Togo">Togo</option>
         <option value="Bénin">Bénin</option>
+        <option value="Burkina Faso">Burkina Faso</option>
+        <option value="Mali">Mali</option>
+        <option value="Sénégal">Sénégal</option>
+        <option value="Ghana">Ghana</option>
+        <option value="Cameroun">Cameroun</option>
       </select>
     </div>
 
-    <textarea id="experience" placeholder="Votre expérience..." rows="4"></textarea>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Ville *</label>
+        <input type="text" name="ville" required>
+      </div>
+      <div class="form-group">
+        <label>Zone *</label>
+        <input type="text" name="zone" required>
+      </div>
+    </div>
+
+    <!-- EXPÉRIENCE -->
+    <div class="section-title">🏢 Expérience</div>
     
-    <button type="button" onclick="envoyerTest()">📧 TEST: Envoyer</button>
-    <button type="button" onclick="effacerLogs()">🗑️ Effacer Logs</button>
+    <div class="form-group">
+      <label>Expérience en Logistique/Commerce *</label>
+      <textarea name="experience" required></textarea>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Fournisseurs connus *</label>
+        <input type="number" name="fournisseurs" required>
+      </div>
+      <div class="form-group">
+        <label>Équipe *</label>
+        <select name="equipe" required>
+          <option value="">-- Sélectionner --</option>
+          <option value="1-2">1-2 personnes</option>
+          <option value="3-5">3-5 personnes</option>
+          <option value="6-10">6-10 personnes</option>
+          <option value="10+">10+ personnes</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- LOGISTIQUE -->
+    <div class="section-title">🚚 Logistique</div>
+    
+    <div class="form-group">
+      <label>Capacité logistique *</label>
+      <textarea name="logistique" required></textarea>
+    </div>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Délai livraison (jours) *</label>
+        <input type="number" name="delai" required>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Zones *</label>
+      <textarea name="zones" required></textarea>
+    </div>
+
+    <button type="submit">📧 Envoyer ma Demande</button>
+
   </form>
-</div>
-
-<!-- LOGS DÉTAILLÉS -->
-<div class="box">
-  <h2>📋 LOGS DÉTAILLÉS</h2>
-  <div id="logs" class="log-box">Logs en attente...
-  </div>
-</div>
-
-<!-- INFORMATIONS TECHNIQUES -->
-<div class="box info">
-  <h2>ℹ️ Configuration Actuelle</h2>
-  <p><strong>Public Key:</strong> rGXngAsslApFe-7us</p>
-  <p><strong>Service ID:</strong> service_geizbmp</p>
-  <p><strong>Template ID:</strong> template_6fx9wss</p>
-  <p><strong>Email Admin:</strong> yezidagnide@gmail.com</p>
 </div>
 
 </div>
 
 <script>
-// Logs
-let logContent = '';
+// Initialiser EmailJS
+emailjs.init("rGXngAsslApFe-7us");
 
-function addLog(msg) {
-  const timestamp = new Date().toLocaleTimeString();
-  logContent += `[${timestamp}] ${msg}\n`;
-  document.getElementById('logs').textContent = logContent;
-  document.getElementById('logs').scrollTop = document.getElementById('logs').scrollHeight;
-  console.log(msg);
-}
+const form = document.getElementById('form');
+const alertBox = document.getElementById('alert');
+const loadingBox = document.getElementById('loading');
 
-function effacerLogs() {
-  logContent = '';
-  document.getElementById('logs').textContent = 'Logs effacés';
-}
-
-// ✅ INITIALISER EmailJS
-addLog('🚀 Démarrage du script...');
-
-try {
-  emailjs.init("rGXngAsslApFe-7us");
-  addLog('✅ EmailJS initialisé avec succès');
-  updateStatus('✅ EmailJS OK', 'ok');
-} catch (e) {
-  addLog('❌ ERREUR init EmailJS: ' + e.message);
-  updateStatus('❌ EmailJS Erreur: ' + e.message, 'error');
-}
-
-function updateStatus(text, status) {
-  const statusBox = document.getElementById('statusText');
-  statusBox.textContent = text;
-  statusBox.className = status === 'ok' ? 'status-ok' : 'status-error';
-}
-
-// ✅ ENVOYER TEST
-async function envoyerTest() {
-  addLog('');
-  addLog('═════════════════════════════════════');
-  addLog('🔄 TENTATIVE D\'ENVOI D\'EMAIL');
-  addLog('═════════════════════════════════════');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
   
-  const nom = document.getElementById('nom').value;
-  const email = document.getElementById('email').value;
-  const telephone = document.getElementById('telephone').value;
-  const pays = document.getElementById('pays').value;
-  const experience = document.getElementById('experience').value;
+  // Récupérer les données
+  const formData = new FormData(form);
+  const data = {
+    to_email: 'yezidagnide@gmail.com',
+    nom: formData.get('nom'),
+    email: formData.get('email'),
+    telephone: formData.get('telephone'),
+    whatsapp: formData.get('whatsapp') || '-',
+    pays: formData.get('pays'),
+    ville: formData.get('ville'),
+    zone: formData.get('zone'),
+    experience: formData.get('experience'),
+    fournisseurs: formData.get('fournisseurs'),
+    equipe: formData.get('equipe'),
+    logistique: formData.get('logistique'),
+    delai: formData.get('delai'),
+    zones: formData.get('zones'),
+    date_signature: new Date().toLocaleDateString('fr-FR') + ' à ' + new Date().toLocaleTimeString('fr-FR')
+  };
   
-  if (!nom || !email || !telephone || !pays) {
-    addLog('❌ Tous les champs avec * sont obligatoires');
-    return;
-  }
+  console.log('📤 Envoi avec données:', data);
   
-  addLog('📝 Données collectées:');
-  addLog(`  - Nom: ${nom}`);
-  addLog(`  - Email: ${email}`);
-  addLog(`  - Téléphone: ${telephone}`);
-  addLog(`  - Pays: ${pays}`);
-  addLog(`  - Expérience: ${experience.substring(0, 30)}...`);
-  
-  addLog('');
-  addLog('📧 Configuration d\'envoi:');
-  addLog(`  - Service ID: service_geizbmp`);
-  addLog(`  - Template ID: template_6fx9wss`);
-  addLog(`  - Email destinataire: yezidagnide@gmail.com`);
-  
-  addLog('');
-  addLog('🔄 Envoi en cours...');
+  loadingBox.classList.add('show');
   
   try {
     const response = await emailjs.send(
       'service_geizbmp',
       'template_6fx9wss',
-      {
-        to_email: 'yezidagnide@gmail.com',
-        from_name: nom,
-        message: `Nom: ${nom}\nEmail: ${email}\nTéléphone: ${telephone}\nPays: ${pays}\nExpérience: ${experience}`,
-        reply_to: email
-      }
+      data
     );
     
-    addLog('');
-    addLog('✅✅✅ EMAIL ENVOYÉ AVEC SUCCÈS ✅✅✅');
-    addLog(`Status: ${response.status}`);
-    addLog(`Text: ${response.text}`);
-    addLog('');
-    addLog('📬 Vérifiez votre boîte mail: yezidagnide@gmail.com');
+    console.log('✅ Succès:', response);
     
-    updateStatus('✅ EMAIL ENVOYÉ AVEC SUCCÈS', 'ok');
+    alertBox.className = 'alert show alert-success';
+    alertBox.innerHTML = '✅ <strong>Demande envoyée !</strong><br>Nous vous contacterons très bientôt.';
+    
+    form.reset();
     
   } catch (error) {
-    addLog('');
-    addLog('❌❌❌ ERREUR D\'ENVOI ❌❌❌');
-    addLog(`Type d'erreur: ${error.name}`);
-    addLog(`Message: ${error.message}`);
-    addLog(`Text: ${error.text}`);
-    addLog('');
-    addLog('Débogage:');
-    addLog(`  - error.status: ${error.status}`);
-    addLog(`  - error.response: ${JSON.stringify(error.response)}`);
-    addLog('');
-    addLog('💡 Possibles solutions:');
-    addLog('  1. Vérifier que la template existe dans EmailJS');
-    addLog('  2. Vérifier que le service_geizbmp est connecté');
-    addLog('  3. Vérifier que template_6fx9wss a les variables: to_email, message');
-    addLog('  4. Vérifier les limites du compte EmailJS (200 emails/mois)');
+    console.error('❌ Erreur:', error);
     
-    updateStatus('❌ ERREUR: ' + error.message, 'error');
+    alertBox.className = 'alert show alert-error';
+    alertBox.innerHTML = `❌ <strong>Erreur:</strong> ${error.message}`;
+  } finally {
+    loadingBox.classList.remove('show');
   }
-  
-  addLog('');
-  addLog('═════════════════════════════════════');
-}
+});
 
-addLog('✅ Script prêt - Remplissez et testez');
+console.log('✅ Formulaire chargé');
 </script>
 
 </body>
