@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Partenariat Régional VENDOB</title>
 <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="https://cdn.emailjs.com/sdk/3.11.0/email.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -113,14 +112,8 @@ header {
 }
 
 @keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .form-group {
@@ -248,14 +241,19 @@ textarea {
 }
 
 .signature-canvas {
-  border: 1px solid var(--border);
+  border: 2px solid var(--border);
   border-radius: 4px;
   cursor: crosshair;
   background: white;
   display: block;
-  margin: 0 auto 15px;
+  margin: 10px auto;
   width: 100%;
   height: 120px;
+  touch-action: none;
+}
+
+.signature-canvas:hover {
+  border-color: var(--orange);
 }
 
 .clear-btn {
@@ -273,6 +271,7 @@ textarea {
   gap: 15px;
   justify-content: flex-end;
   margin-top: 30px;
+  flex-wrap: wrap;
 }
 
 button {
@@ -290,7 +289,7 @@ button {
   color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:hover:not(:disabled) {
   background: #e03a0c;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(244, 82, 30, 0.3);
@@ -313,45 +312,41 @@ button {
   color: white;
 }
 
-.success-message {
-  background: #e8f5e9;
-  border-left: 4px solid #4caf50;
-  padding: 20px;
+.alert {
+  padding: 16px;
   border-radius: 8px;
   margin-bottom: 20px;
   display: none;
 }
 
-.success-message.show {
+.alert.show {
   display: block;
 }
 
-.success-message h4 {
+.alert-success {
+  background: #e8f5e9;
+  border-left: 4px solid #4caf50;
   color: #2e7d32;
-  margin-bottom: 8px;
 }
 
-.success-message p {
-  color: #558b2f;
-  font-size: 14px;
+.alert-error {
+  background: #ffebee;
+  border-left: 4px solid #f44336;
+  color: #c62828;
 }
 
-.info-box {
+.alert-info {
   background: #e3f2fd;
   border-left: 4px solid #2196f3;
-  padding: 20px;
-  border-radius: 8px;
-  margin-bottom: 25px;
-}
-
-.info-box strong {
   color: #1565c0;
-  display: block;
-  margin-bottom: 8px;
 }
 
-.info-box p {
-  color: #0d47a1;
+.alert h4 {
+  margin-bottom: 8px;
+  font-weight: 700;
+}
+
+.alert p {
   font-size: 14px;
   margin: 5px 0;
 }
@@ -374,36 +369,39 @@ button {
 .loading {
   display: none;
   text-align: center;
-  color: var(--orange);
-  font-weight: 600;
-  margin-top: 10px;
+  padding: 20px;
 }
 
 .loading.show {
   display: block;
 }
 
-.error-message {
-  background: #ffebee;
-  border-left: 4px solid #f44336;
-  padding: 20px;
+.spinner {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid var(--orange);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.debug-box {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  margin-bottom: 20px;
-  display: none;
-}
-
-.error-message.show {
-  display: block;
-}
-
-.error-message h4 {
-  color: #c62828;
-  margin-bottom: 8px;
-}
-
-.error-message p {
-  color: #d32f2f;
-  font-size: 14px;
+  padding: 15px;
+  margin-top: 20px;
+  font-size: 12px;
+  font-family: monospace;
+  color: #666;
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 #contractContainer {
@@ -423,9 +421,9 @@ button {
 <div class="container">
 
 <div class="tabs">
-  <button class="tab active" onclick="showTab('profil')">1. Profil Partenaire</button>
-  <button class="tab" onclick="showTab('contrat')">2. Contrat</button>
-  <button class="tab" onclick="showTab('signature')">3. Signature</button>
+  <button class="tab active" onclick="showTab('profil', 0)">1. Profil</button>
+  <button class="tab" onclick="showTab('contrat', 1)">2. Contrat</button>
+  <button class="tab" onclick="showTab('signature', 2)">3. Signature</button>
 </div>
 
 <div class="progress">
@@ -434,13 +432,15 @@ button {
 
 <div class="content">
 
+<!-- ALERTES -->
+<div id="alertBox" class="alert"></div>
+
 <!-- TAB 1: PROFIL -->
 <div class="section active" id="profil-section">
   
-  <div class="info-box">
+  <div class="alert alert-info" style="display: block;">
     <strong>ℹ️ Bienvenue Partenaire VENDOB</strong>
-    <p>Vous êtes en train de devenir un partenaire régional de VENDOB.</p>
-    <p>Remplissez votre profil pour continuer vers le contrat de partenariat.</p>
+    <p>Remplissez votre profil pour continuer.</p>
   </div>
 
   <form id="formProfil">
@@ -479,11 +479,6 @@ button {
         <option value="Nigeria">Nigeria</option>
         <option value="Togo">Togo</option>
         <option value="Bénin">Bénin</option>
-        <option value="Burkina Faso">Burkina Faso</option>
-        <option value="Mali">Mali</option>
-        <option value="Sénégal">Sénégal</option>
-        <option value="Ghana">Ghana</option>
-        <option value="Cameroun">Cameroun</option>
       </select>
     </div>
 
@@ -494,7 +489,7 @@ button {
       </div>
       <div class="form-group">
         <label>Région/Zone Couverte *</label>
-        <input type="text" name="zone" placeholder="Ex: Sud, Centre, Nord..." required>
+        <input type="text" name="zone" required>
       </div>
     </div>
 
@@ -502,13 +497,13 @@ button {
 
     <div class="form-group">
       <label>Expérience en Logistique/Commerce *</label>
-      <textarea name="experience" placeholder="Décrivez votre expérience..." required></textarea>
+      <textarea name="experience" required></textarea>
     </div>
 
     <div class="form-grid">
       <div class="form-group">
         <label>Nombre de Fournisseurs Connus *</label>
-        <input type="number" name="fournisseurs" placeholder="Estimation" required>
+        <input type="number" name="fournisseurs" required>
       </div>
       <div class="form-group">
         <label>Capacité d'Équipe *</label>
@@ -526,33 +521,23 @@ button {
 
     <div class="form-group">
       <label>Capacité Logistique *</label>
-      <textarea name="logistique" placeholder="Ressources, véhicules, réseau de distribution..." required></textarea>
+      <textarea name="logistique" required></textarea>
     </div>
 
     <div class="form-group">
       <label>Délai Moyen de Livraison (jours) *</label>
-      <input type="number" name="delai" placeholder="Ex: 2" required>
+      <input type="number" name="delai" required>
     </div>
 
     <div class="form-group">
       <label>Zones de Livraison *</label>
-      <textarea name="zones" placeholder="Décrivez les zones géographiques que vous pouvez couvrir" required></textarea>
-    </div>
-
-    <h3 style="color: var(--orange); margin-bottom: 20px; margin-top: 30px;">✅ Engagement</h3>
-
-    <div class="form-group">
-      <label style="display: flex; align-items: center; gap: 10px;">
-        <input type="checkbox" name="engagement" required style="width: auto;">
-        Je comprends mes responsabilités en tant que partenaire régional
-      </label>
+      <textarea name="zones" required></textarea>
     </div>
 
     <div class="button-group">
       <button type="button" class="btn-secondary" onclick="resetForm()">Réinitialiser</button>
-      <button type="button" class="btn-primary" onclick="nextTab('contrat')">Continuer vers Contrat →</button>
+      <button type="button" class="btn-primary" onclick="nextTab('contrat', 1)">Continuer →</button>
     </div>
-
   </form>
 </div>
 
@@ -561,99 +546,53 @@ button {
   
   <div class="contract" id="contractContainer">
     <h2>📄 CONTRAT DE PARTENARIAT RÉGIONAL VENDOB</h2>
-    
     <p style="text-align: center; font-style: italic; margin-bottom: 30px;">
       Entre VENDOB et <strong><span id="contractNom">[Nom du Partenaire]</span></strong>
     </p>
 
     <div class="article">
       <div class="article-title">1. OBJET DU CONTRAT</div>
-      <p>Ce contrat établit les conditions de partenariat entre VENDOB et le partenaire régional. Le partenaire agira comme représentant régional responsable du recrutement des fournisseurs et de la gestion de la logistique dans la zone assignée.</p>
+      <p>Ce contrat établit les conditions de partenariat entre VENDOB et le partenaire régional.</p>
     </div>
 
     <div class="article">
-      <div class="article-title">2. RESPONSABILITÉS DU PARTENAIRE RÉGIONAL</div>
-      <p><strong>Recrutement des Fournisseurs :</strong> Identifier, évaluer et intégrer les fournisseurs locaux compétitifs sur la plateforme VENDOB. Objectif minimum : 20-30 fournisseurs dans les 3-6 premiers mois.</p>
-      <p><strong>Gestion Logistique :</strong> Coordonner la logistique et les livraisons pour toutes les commandes générées via les fournisseurs du partenaire.</p>
-      <p><strong>Support Client :</strong> Assurer un support client en langue locale et gérer les relations avec les fournisseurs régionaux.</p>
-      <p><strong>Qualité :</strong> Maintenir les standards de qualité VENDOB et assurer la satisfaction clients.</p>
+      <div class="article-title">2. RESPONSABILITÉS</div>
+      <p>Recruter 20-30 fournisseurs • Gérer la logistique • Support client 24/7</p>
     </div>
 
     <div class="article">
       <div class="article-title">3. SYSTÈME DE COMMISSION</div>
-      <p>Le partenaire régional reçoit une commission sur chaque commande générée par ses fournisseurs. Les commissions sont cautionnées chaque mois et payées mensuellement après validation de la commande par VENDOB.</p>
-      <p><strong>Structure :</strong> Commission sur le chiffre d'affaires + frais logistique + bonus de performance.</p>
-      <p><strong>Paiement :</strong> Versement mensuel garantie. Tous les paiements sont sécurisés et traçables.</p>
+      <p>Commission sur chiffre d'affaires + frais logistique + bonus de performance. Paiement mensuel garanti.</p>
     </div>
 
     <div class="article">
       <div class="article-title">4. ZONE D'EXCLUSIVITÉ</div>
-      <p>Le partenaire est reconnu comme l'UNIQUE partenaire VENDOB pour le pays/région assigné. VENDOB ne peut pas recruter d'autres partenaires dans la même zone sans accord du partenaire.</p>
+      <p>Le partenaire est l'UNIQUE représentant VENDOB pour sa région.</p>
     </div>
 
     <div class="article">
       <div class="article-title">5. SUPPORT VENDOB</div>
-      <p>VENDOB fournit :</p>
-      <p>✓ Plateforme technologique complète (SaaS gratuit)<br>
-      ✓ Formation pour les fournisseurs recruités<br>
-      ✓ Matériels marketing et branding VENDOB<br>
-      ✓ Support opérationnel 24/7<br>
-      ✓ Système de paiement sécurisé</p>
+      <p>Plateforme SaaS gratuite • Formation • Matériels marketing • Support 24/7</p>
     </div>
 
     <div class="article">
-      <div class="article-title">6. ENGAGEMENT REQUIS</div>
-      <p>• Recruter minimum 20-30 fournisseurs dans les 3-6 mois<br>
-      • Gérer la logistique de manière fiable et ponctuelle<br>
-      • Support client 24/7 en langue locale<br>
-      • Respect des standards VENDOB<br>
-      • Rapports mensuels sur l'activité</p>
+      <div class="article-title">6. DURÉE</div>
+      <p>Contrat indéterminé - Résiliation possible avec 30 jours de préavis.</p>
     </div>
-
-    <div class="article">
-      <div class="article-title">7. DURÉE ET RÉSILIATION</div>
-      <p>Ce contrat est valable pour une durée indéterminée. Résiliation possible avec préavis de 30 jours de l'une ou l'autre partie. Les conditions de performance seront évaluées tous les 6 mois.</p>
-    </div>
-
-    <div class="article">
-      <div class="article-title">8. CONFIDENTIALITÉ ET DONNÉES</div>
-      <p>Le partenaire s'engage à maintenir la confidentialité des informations clients et à traiter les données conformément à la loi. Les données clients restent propriété de VENDOB.</p>
-    </div>
-
-    <div class="article">
-      <div class="article-title">9. CONDITIONS GÉNÉRALES</div>
-      <p>✓ Tous les partenaires acceptent les conditions générales VENDOB<br>
-      ✓ Non-divulgation des tarifs compétitifs<br>
-      ✓ Respect de la marque et du branding VENDOB<br>
-      ✓ Transparence totale dans les rapports<br>
-      ✓ Paiement des taxes locales responsabilité du partenaire</p>
-    </div>
-  </div>
-
-  <div class="info-box">
-    <strong>✓ Vous avez lu et compris le contrat ?</strong>
-    <p>Cliquez sur "Continuer vers Signature" pour accepter et signer numériquement.</p>
   </div>
 
   <div class="button-group">
-    <button type="button" class="btn-secondary" onclick="showTab('profil')">← Retour Profil</button>
-    <button type="button" class="btn-primary" onclick="nextTab('signature')">Continuer vers Signature →</button>
+    <button type="button" class="btn-secondary" onclick="showTab('profil', 0)">← Retour</button>
+    <button type="button" class="btn-primary" onclick="nextTab('signature', 2)">Continuer →</button>
   </div>
 </div>
 
 <!-- TAB 3: SIGNATURE -->
 <div class="section" id="signature-section">
   
-  <div class="error-message" id="errorMsg"></div>
-  
-  <div class="success-message" id="successMsg">
-    <h4>✅ Contrat signé et envoyé avec succès !</h4>
-    <p>Vos signatures ont été enregistrées et l'email avec le PDF du contrat a été envoyé. Un responsable VENDOB vous contactera très bientôt pour débuter le partenariat.</p>
-  </div>
-
-  <div class="info-box">
+  <div class="alert alert-info" style="display: block;">
     <strong>📝 Signature Numérique</strong>
-    <p>Signez ci-dessous pour valider votre engagement en tant que partenaire régional VENDOB.</p>
+    <p>Signez ci-dessous avec votre souris ou doigt (tablette). Passez votre main dans la zone blanche.</p>
   </div>
 
   <div class="signature-section">
@@ -662,33 +601,37 @@ button {
     <div class="signature-grid">
       <div class="signature-box">
         <label><strong>VENDOB</strong></label>
-        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='60'%3E%3Ctext x='10' y='35' font-family='cursive' font-size='20' fill='%23F4521E'%3EVENDOB%3C/text%3E%3C/svg%3E" style="width: 100%; margin-bottom: 10px;">
+        <p style="font-size: 16px; margin: 20px 0; color: var(--orange);">✓ Acceptée</p>
         <p style="font-size: 12px; color: #666;">Signé automatiquement</p>
       </div>
 
       <div class="signature-box">
         <label><strong>Partenaire Régional</strong></label>
-        <canvas id="signaturePad" class="signature-canvas"></canvas>
-        <button type="button" class="clear-btn" onclick="clearSignature()">Effacer Signature</button>
+        <canvas id="signaturePad" class="signature-canvas" width="400" height="120"></canvas>
+        <button type="button" class="clear-btn" onclick="clearSignature()">🗑️ Effacer</button>
+        <p id="sigStatus" style="font-size: 12px; color: #999; margin-top: 10px;">En attente de signature...</p>
       </div>
     </div>
 
     <div style="margin-top: 20px;">
       <label style="display: flex; align-items: center; gap: 10px;">
-        <input type="checkbox" id="accepteConditions" required>
-        J'accepte et je signe numériquement ce contrat de partenariat
+        <input type="checkbox" id="accepteConditions">
+        J'accepte ce contrat de partenariat
       </label>
     </div>
   </div>
 
   <div class="loading" id="loading">
-    ⏳ Génération du PDF et envoi de l'email en cours...
+    <div class="spinner"></div>
+    <p style="margin-top: 10px;">⏳ Envoi en cours...</p>
   </div>
 
   <div class="button-group">
-    <button type="button" class="btn-secondary" onclick="showTab('contrat')">← Retour Contrat</button>
+    <button type="button" class="btn-secondary" onclick="showTab('contrat', 1)">← Retour</button>
     <button type="button" class="btn-primary" id="submitBtn" onclick="submitForm()">✅ Signer & Envoyer</button>
   </div>
+
+  <div class="debug-box" id="debugBox"></div>
 </div>
 
 </div>
@@ -696,106 +639,157 @@ button {
 </div>
 
 <script>
-// ✅ INITIALISER EMAILJS
-emailjs.init("rGXngAsslApFe-7us");
+console.log('🚀 Script VENDOB chargé');
 
-// ✅ CONFIG EMAILJS
-const EMAILJS_CONFIG = {
+// ✅ INITIALISER EMAILJS
+try {
+  emailjs.init("rGXngAsslApFe-7us");
+  console.log('✅ EmailJS initialisé');
+  addDebugLog('✅ EmailJS initialisé');
+} catch (e) {
+  console.error('❌ Erreur EmailJS init:', e);
+  addDebugLog('❌ Erreur EmailJS: ' + e.message);
+}
+
+const CONFIG = {
   serviceId: "service_geizbmp",
   templateId: "template_6fx9wss",
-  publicKey: "rGXngAsslApFe-7us",
   adminEmail: "yezidagnide@gmail.com"
 };
 
-// Canvas Signature
+let signatureExists = false;
+
+// ✅ CANVAS SIGNATURE
 const canvas = document.getElementById('signaturePad');
 const ctx = canvas.getContext('2d');
 let isDrawing = false;
-let lastX, lastY;
 
+console.log('Canvas element:', canvas);
+console.log('Canvas context:', ctx);
+
+// Redimensionner le canvas
 function resizeCanvas() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = canvas.offsetHeight;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
+  console.log('Canvas resized:', canvas.width, 'x', canvas.height);
 }
 resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
 
+// ✅ ÉVÉNEMENTS SOURIS POUR LA SIGNATURE
 canvas.addEventListener('mousedown', (e) => {
+  console.log('🖱️ mousedown');
   isDrawing = true;
-  [lastX, lastY] = [e.offsetX, e.offsetY];
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  ctx.beginPath();
+  ctx.moveTo(x, y);
 });
 
 canvas.addEventListener('mousemove', (e) => {
   if (!isDrawing) return;
+  
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
   ctx.strokeStyle = '#F4521E';
   ctx.lineWidth = 2;
   ctx.lineCap = 'round';
   ctx.lineJoin = 'round';
-  ctx.beginPath();
-  ctx.moveTo(lastX, lastY);
-  ctx.lineTo(e.offsetX, e.offsetY);
+  ctx.lineTo(x, y);
   ctx.stroke();
-  [lastX, lastY] = [e.offsetX, e.offsetY];
+  
+  signatureExists = true;
+  document.getElementById('sigStatus').textContent = '✓ Signature détectée';
+  document.getElementById('sigStatus').style.color = '#4caf50';
 });
 
-canvas.addEventListener('mouseup', () => isDrawing = false);
-canvas.addEventListener('mouseout', () => isDrawing = false);
+canvas.addEventListener('mouseup', () => {
+  console.log('🖱️ mouseup');
+  isDrawing = false;
+});
+
+canvas.addEventListener('mouseout', () => {
+  isDrawing = false;
+});
+
+// Support tactile
+canvas.addEventListener('touchstart', (e) => {
+  isDrawing = true;
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  ctx.beginPath();
+  ctx.moveTo(touch.clientX - rect.left, touch.clientY - rect.top);
+});
+
+canvas.addEventListener('touchmove', (e) => {
+  if (!isDrawing) return;
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const x = touch.clientX - rect.left;
+  const y = touch.clientY - rect.top;
+  
+  ctx.strokeStyle = '#F4521E';
+  ctx.lineWidth = 2;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.lineTo(x, y);
+  ctx.stroke();
+  
+  signatureExists = true;
+  document.getElementById('sigStatus').textContent = '✓ Signature détectée';
+  document.getElementById('sigStatus').style.color = '#4caf50';
+});
+
+canvas.addEventListener('touchend', () => {
+  isDrawing = false;
+});
 
 function clearSignature() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  signatureExists = false;
+  document.getElementById('sigStatus').textContent = 'En attente de signature...';
+  document.getElementById('sigStatus').style.color = '#999';
+  console.log('🗑️ Signature effacée');
 }
 
-// Tabs
-function showTab(tabName) {
+// ✅ TABS
+function showTab(tabName, tabIndex) {
+  console.log('📑 Affichage tab:', tabName);
+  
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  
   document.getElementById(tabName + '-section').classList.add('active');
+  document.querySelectorAll('.tab')[tabIndex].classList.add('active');
   
-  // Trouver et activer le bon tab
-  const tabs = document.querySelectorAll('.tab');
-  tabs.forEach(tab => {
-    if (tab.textContent.includes(['Profil', 'Contrat', 'Signature'][['profil', 'contrat', 'signature'].indexOf(tabName)])) {
-      tab.classList.add('active');
-    }
-  });
+  // Mise à jour progress
+  const progress = (tabIndex + 1) * 33;
+  document.getElementById('progressBar').style.width = progress + '%';
   
-  updateProgress(tabName);
+  window.scrollTo(0, 0);
 }
 
-function nextTab(tabName) {
+function nextTab(tabName, tabIndex) {
+  console.log('➡️ Prochaine tab:', tabName);
+  
   if (tabName === 'contrat') {
-    // Valider le formulaire profil
     const form = document.getElementById('formProfil');
     if (!form.checkValidity()) {
+      showAlert('Veuillez remplir tous les champs du profil', 'error');
       form.reportValidity();
       return;
     }
     
-    // Afficher le contrat avec les données
     const nom = form.elements['nom'].value;
     document.getElementById('contractNom').textContent = nom;
     document.getElementById('contractContainer').style.display = 'block';
+    addDebugLog('📋 Contrat prêt pour: ' + nom);
   }
-
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.getElementById(tabName + '-section').classList.add('active');
   
-  const tabs = document.querySelectorAll('.tab');
-  const tabIndex = ['profil', 'contrat', 'signature'].indexOf(tabName);
-  if (tabs[tabIndex]) tabs[tabIndex].classList.add('active');
-  
-  updateProgress(tabName);
-  window.scrollTo(0, 0);
-}
-
-function updateProgress(tabName) {
-  const progressValues = {
-    'profil': 33,
-    'contrat': 66,
-    'signature': 100
-  };
-  document.getElementById('progressBar').style.width = progressValues[tabName] + '%';
+  showTab(tabName, tabIndex);
 }
 
 function resetForm() {
@@ -803,235 +797,191 @@ function resetForm() {
   clearSignature();
 }
 
-// ✅ GÉNÉRER PDF DU CONTRAT
-async function generatePDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
+// ✅ MESSAGES D'ALERTE
+function showAlert(message, type = 'info') {
+  const alertBox = document.getElementById('alertBox');
+  alertBox.className = 'alert show alert-' + type;
+  alertBox.innerHTML = `<h4>${type === 'error' ? '❌ Erreur' : type === 'success' ? '✅ Succès' : 'ℹ️ Information'}</h4><p>${message}</p>`;
+  console.log(`[${type.toUpperCase()}] ${message}`);
   
-  const form = document.getElementById('formProfil');
-  const nom = form.elements['nom'].value;
-  const email = form.elements['email'].value;
-  const pays = form.elements['pays'].value;
-  const ville = form.elements['ville'].value;
-  const zone = form.elements['zone'].value;
-  
-  // En-tête
-  doc.setFontSize(20);
-  doc.setTextColor(244, 82, 30);
-  doc.text('CONTRAT DE PARTENARIAT RÉGIONAL', 105, 20, { align: 'center' });
-  
-  doc.setFontSize(14);
-  doc.text('VENDOB', 105, 30, { align: 'center' });
-  
-  // Séparateur
-  doc.setDrawColor(244, 82, 30);
-  doc.line(10, 35, 200, 35);
-  
-  doc.setFontSize(11);
-  doc.setTextColor(0, 0, 0);
-  doc.text(`Entre VENDOB et ${nom}`, 105, 45, { align: 'center' });
-  
-  let yPos = 55;
-  
-  // Sections
-  const sections = [
-    { title: '1. INFORMATIONS PARTENAIRE', items: [
-      `Nom : ${nom}`,
-      `Email : ${email}`,
-      `Pays : ${pays}`,
-      `Ville : ${ville}`,
-      `Zone : ${zone}`
-    ]},
-    { title: '2. OBJET DU CONTRAT', items: [
-      'Ce contrat établit les conditions de partenariat entre VENDOB et le partenaire régional.',
-      'Le partenaire agira comme représentant régional responsable du recrutement des fournisseurs et de la gestion logistique.'
-    ]},
-    { title: '3. RESPONSABILITÉS', items: [
-      '✓ Recruter 20-30 fournisseurs dans les 3-6 mois',
-      '✓ Gérer la logistique et les livraisons',
-      '✓ Support client 24/7',
-      '✓ Maintenir les standards VENDOB'
-    ]},
-    { title: '4. RÉMUNÉRATION', items: [
-      '✓ Commission sur chaque commande',
-      '✓ Frais logistique',
-      '✓ Bonus de performance',
-      '✓ Paiement mensuel garanti'
-    ]},
-    { title: '5. EXCLUSIVITÉ', items: [
-      'Le partenaire est l\'UNIQUE représentant VENDOB pour sa région.'
-    ]},
-    { title: '6. DURÉE', items: [
-      'Contrat indéterminé avec résiliation possible sous 30 jours de préavis.'
-    ]}
-  ];
-  
-  sections.forEach(section => {
-    if (yPos > 260) {
-      doc.addPage();
-      yPos = 20;
-    }
-    
-    doc.setFontSize(11);
-    doc.setTextColor(244, 82, 30);
-    doc.setFont(undefined, 'bold');
-    doc.text(section.title, 15, yPos);
-    yPos += 8;
-    
-    doc.setTextColor(0, 0, 0);
-    doc.setFont(undefined, 'normal');
-    doc.setFontSize(10);
-    
-    section.items.forEach(item => {
-      const splitText = doc.splitTextToSize(item, 180);
-      doc.text(splitText, 20, yPos);
-      yPos += splitText.length * 6 + 2;
-      
-      if (yPos > 270) {
-        doc.addPage();
-        yPos = 20;
-      }
-    });
-    
-    yPos += 5;
-  });
-  
-  // Signature
-  if (yPos > 240) {
-    doc.addPage();
-    yPos = 20;
+  if (type !== 'success') {
+    setTimeout(() => alertBox.classList.remove('show'), 8000);
   }
-  
-  doc.setDrawColor(244, 82, 30);
-  doc.line(10, yPos, 200, yPos);
-  yPos += 10;
-  
-  doc.setFontSize(11);
-  doc.setTextColor(244, 82, 30);
-  doc.setFont(undefined, 'bold');
-  doc.text('SIGNATURES', 15, yPos);
-  yPos += 10;
-  
-  doc.setTextColor(0, 0, 0);
-  doc.setFont(undefined, 'normal');
-  doc.setFontSize(10);
-  doc.text(`Date: ${new Date().toLocaleDateString('fr-FR')}`, 15, yPos);
-  yPos += 15;
-  
-  doc.text('VENDOB                          Partenaire Régional', 15, yPos);
-  yPos += 20;
-  
-  doc.text('_____________________          _____________________', 15, yPos);
-  
-  return doc;
 }
 
-// ✅ ENVOYER EMAIL AVEC EMAILJS
+function addDebugLog(msg) {
+  const debugBox = document.getElementById('debugBox');
+  const timestamp = new Date().toLocaleTimeString();
+  debugBox.innerHTML = `[${timestamp}] ${msg}<br>` + debugBox.innerHTML;
+  if (debugBox.children.length > 10) {
+    debugBox.removeChild(debugBox.lastChild);
+  }
+}
+
+// ✅ GÉNÉRER PDF
+async function generatePDF(formData) {
+  try {
+    console.log('📄 Génération PDF...');
+    addDebugLog('📄 Génération du PDF...');
+    
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    
+    const y0 = 20;
+    let yPos = y0;
+    
+    doc.setFontSize(16);
+    doc.setTextColor(244, 82, 30);
+    doc.text('CONTRAT PARTENARIAT RÉGIONAL', 105, yPos, { align: 'center' });
+    yPos += 15;
+    
+    doc.setFontSize(12);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Partenaire: ${formData.nom}`, 20, yPos);
+    yPos += 8;
+    doc.text(`Pays: ${formData.pays}`, 20, yPos);
+    yPos += 8;
+    doc.text(`Ville: ${formData.ville}`, 20, yPos);
+    yPos += 8;
+    doc.text(`Email: ${formData.email}`, 20, yPos);
+    yPos += 12;
+    
+    doc.setFontSize(10);
+    doc.text(`Date: ${new Date().toLocaleDateString('fr-FR')}`, 20, yPos);
+    
+    yPos += 20;
+    doc.setFontSize(11);
+    doc.setFont(undefined, 'bold');
+    doc.text('RESPONSABILITÉS:', 20, yPos);
+    yPos += 8;
+    
+    doc.setFont(undefined, 'normal');
+    doc.setFontSize(10);
+    doc.text('✓ Recruter 20-30 fournisseurs', 20, yPos);
+    yPos += 6;
+    doc.text('✓ Gérer la logistique', 20, yPos);
+    yPos += 6;
+    doc.text('✓ Support client 24/7', 20, yPos);
+    
+    console.log('✅ PDF généré');
+    addDebugLog('✅ PDF généré avec succès');
+    
+    return doc.output('dataurlstring');
+  } catch (error) {
+    console.error('❌ Erreur PDF:', error);
+    addDebugLog('❌ Erreur PDF: ' + error.message);
+    throw error;
+  }
+}
+
+// ✅ SOUMETTRE FORMULAIRE
 async function submitForm() {
-  const form = document.getElementById('formProfil');
-  const checkbox = document.getElementById('accepteConditions');
-  
-  if (!checkbox.checked) {
-    showError('Vous devez accepter les conditions pour continuer.');
-    return;
-  }
-  
-  // Vérifier signature
-  const imageData = canvas.toDataURL();
-  if (imageData === canvas.toDataURL() && !canvas.toDataURL().includes('data:image')) {
-    showError('Veuillez signer avant de soumettre.');
-    return;
-  }
-  
-  document.getElementById('loading').classList.add('show');
-  document.getElementById('submitBtn').disabled = true;
+  console.log('🔄 Soumission du formulaire...');
   
   try {
-    // Générer PDF
-    const doc = await generatePDF();
-    const pdfDataUrl = doc.output('dataurlstring');
+    // Validation
+    if (!document.getElementById('accepteConditions').checked) {
+      showAlert('Vous devez accepter les conditions', 'error');
+      return;
+    }
     
-    // Préparer les données pour EmailJS
+    if (!signatureExists) {
+      showAlert('Vous devez signer avant de soumettre', 'error');
+      return;
+    }
+    
+    const form = document.getElementById('formProfil');
     const formData = new FormData(form);
-    const emailData = {
-      to_email: EMAILJS_CONFIG.adminEmail,
-      from_name: form.elements['nom'].value,
-      from_email: form.elements['email'].value,
-      phone: form.elements['telephone'].value,
-      whatsapp: form.elements['whatsapp'].value || 'Non fourni',
-      country: form.elements['pays'].value,
-      city: form.elements['ville'].value,
-      zone: form.elements['zone'].value,
-      experience: form.elements['experience'].value,
-      fournisseurs: form.elements['fournisseurs'].value,
-      equipe: form.elements['equipe'].value,
-      logistique: form.elements['logistique'].value,
-      delai: form.elements['delai'].value,
-      zones: form.elements['zones'].value,
-      date_signature: new Date().toLocaleDateString('fr-FR'),
-      pdf_url: pdfDataUrl
+    
+    const dataObj = {
+      nom: formData.get('nom'),
+      email: formData.get('email'),
+      telephone: formData.get('telephone'),
+      whatsapp: formData.get('whatsapp') || 'Non fourni',
+      pays: formData.get('pays'),
+      ville: formData.get('ville'),
+      zone: formData.get('zone'),
+      experience: formData.get('experience'),
+      fournisseurs: formData.get('fournisseurs'),
+      equipe: formData.get('equipe'),
+      logistique: formData.get('logistique'),
+      delai: formData.get('delai'),
+      zones: formData.get('zones'),
+      date_signature: new Date().toLocaleDateString('fr-FR')
     };
     
-    // Envoyer email
-    const response = await emailjs.send(
-      EMAILJS_CONFIG.serviceId,
-      EMAILJS_CONFIG.templateId,
-      {
-        to_email: EMAILJS_CONFIG.adminEmail,
-        message: `
+    console.log('📝 Données du formulaire:', dataObj);
+    addDebugLog('📝 Données collectées');
+    
+    document.getElementById('loading').classList.add('show');
+    document.getElementById('submitBtn').disabled = true;
+    
+    // Générer PDF
+    const pdfData = await generatePDF(dataObj);
+    
+    // Préparer message EmailJS
+    const message = `
 🌍 NOUVELLE DEMANDE DE PARTENARIAT RÉGIONAL VENDOB
 
 👤 INFORMATIONS PERSONNELLES
-Nom : ${emailData.from_name}
-Email : ${emailData.from_email}
-Téléphone : ${emailData.phone}
-WhatsApp : ${emailData.whatsapp}
+Nom : ${dataObj.nom}
+Email : ${dataObj.email}
+Téléphone : ${dataObj.telephone}
+WhatsApp : ${dataObj.whatsapp}
 
 🌍 INFORMATIONS RÉGIONALES
-Pays : ${emailData.country}
-Ville : ${emailData.city}
-Région/Zone : ${emailData.zone}
+Pays : ${dataObj.pays}
+Ville : ${dataObj.ville}
+Région/Zone : ${dataObj.zone}
 
-🏢 EXPÉRIENCE & CAPACITÉS
-Expérience : ${emailData.experience}
-Fournisseurs connus : ${emailData.fournisseurs}
-Équipe : ${emailData.equipe}
+🏢 EXPÉRIENCE
+Expérience : ${dataObj.experience}
+Fournisseurs connus : ${dataObj.fournisseurs}
+Équipe : ${dataObj.equipe}
 
 🚚 LOGISTIQUE
-Capacité : ${emailData.logistique}
-Délai : ${emailData.delai} jours
-Zones : ${emailData.zones}
+Capacité : ${dataObj.logistique}
+Délai : ${dataObj.delai} jours
+Zones : ${dataObj.zones}
 
-✅ STATUT
-Signature : CONFIRMÉE ✓
-Date : ${emailData.date_signature}
+✅ Date signature : ${dataObj.date_signature}
 
-Un PDF du contrat signé est en pièce jointe.
-        `
+📎 PDF du contrat signé en pièce jointe.
+    `;
+    
+    console.log('📧 Envoi email...');
+    addDebugLog('📧 Envoi email à: ' + CONFIG.adminEmail);
+    
+    const response = await emailjs.send(
+      CONFIG.serviceId,
+      CONFIG.templateId,
+      {
+        to_email: CONFIG.adminEmail,
+        message: message,
+        from_name: dataObj.nom
       }
     );
     
-    if (response.status === 200) {
-      document.getElementById('loading').classList.remove('show');
-      document.getElementById('successMsg').classList.add('show');
-      form.reset();
-      clearSignature();
-    }
+    console.log('✅ Email envoyé:', response);
+    addDebugLog('✅ Email envoyé avec succès');
+    
+    document.getElementById('loading').classList.remove('show');
+    showAlert('✅ Votre demande a été envoyée avec succès! Un email a été reçu à ' + CONFIG.adminEmail, 'success');
+    
+    form.reset();
+    clearSignature();
+    
   } catch (error) {
-    console.error('Erreur:', error);
-    showError(`Erreur lors de l'envoi: ${error.message}`);
+    console.error('❌ Erreur complète:', error);
+    addDebugLog('❌ ERREUR: ' + error.message);
+    showAlert('❌ Erreur lors de l\'envoi: ' + error.message, 'error');
   } finally {
     document.getElementById('loading').classList.remove('show');
     document.getElementById('submitBtn').disabled = false;
   }
 }
 
-function showError(message) {
-  const errorMsg = document.getElementById('errorMsg');
-  errorMsg.innerHTML = `<h4>❌ Erreur</h4><p>${message}</p>`;
-  errorMsg.classList.add('show');
-  setTimeout(() => errorMsg.classList.remove('show'), 5000);
-}
+console.log('✅ Tous les scripts chargés et prêts');
 </script>
 </body>
 </html>
